@@ -16,16 +16,21 @@ def get_word(cd, n):
 def get_code_compl(code, cursor):
 
 	script = jedi.Script(code)
-	return [i.complete for i in script.complete(*get_word(code, cursor))]
+	
+	try: code_compl = [i.complete for i in script.complete(*get_word(code, cursor))]
+	except: code_compl = []
+	try: errors = [(i._parso_error.start_pos, i._parso_error.end_pos) for i in script.get_syntax_errors()]
+	except: errors = []
+	try: description = script.get_context(*get_word(code, cursor)).description
+	except: description = []
+	try: refs = [(i.line, i.column) for i in script.get_references(*get_word(code, cursor), scope = 'file')]
+	except: refs = []
 
-if __name__ == "__main__":
-	with open("app.py", "r") as f:
-		g = f.read()
-	u = 200
-	print(g[u])
-	print("------------")
-	print(g[u:u + 5])
-	print("------------")
-	print(g[u - 10:u + 10])
-	print("------------")
-	print(get_code_compl(g, u))
+	ret = {
+		"Code Compl": code_compl,
+		"Errors": errors,
+		"Description": description,
+		"Word References": refs
+	}
+
+	return ret
