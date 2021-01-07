@@ -17,7 +17,10 @@ class CodeCompleter(Resource):
 	def get(self):
 		args = data_parser.parse_args()
 		with open("file.txt") as f:
-			code = f.read() + args["Char"]
+			if args["Char"] != -1:
+				code = f.read() + args["Char"]
+			else:
+				code = f.read()[:-1]
 			f.write(code)
 		return get_code_compl(code, args["Index"]), 200
 

@@ -17,8 +17,8 @@ def get_code_compl(code, cursor):
 
 	script = jedi.Script(code)
 	
-	try: code_compl = [i.complete for i in script.complete(*get_word(code, cursor))]
-	except: code_compl = []
+	try: code_compl = [[i.complete, i.name_with_symbols] for i in script.complete(*get_word(code, cursor))]
+	except: code_compl = [1]
 	try: errors = [(i._parso_error.start_pos, i._parso_error.end_pos) for i in script.get_syntax_errors()]
 	except: errors = []
 	try: description = script.get_context(*get_word(code, cursor)).description
