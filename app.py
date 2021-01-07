@@ -6,7 +6,7 @@ from tkinter import Tk, Label, Button, messagebox
 import requests
 
 data_parser = reqparse.RequestParser()
-data_parser.add_argument("Char", type = str, help = "The last character typed", required = True)
+data_parser.add_argument("Code", type = str, help = "The last character typed", required = True)
 data_parser.add_argument("Index", type = int, help = "Cursors position", required = True)
 
 app = Flask(__name__)
@@ -16,13 +16,7 @@ class CodeCompleter(Resource):
 
 	def get(self):
 		args = data_parser.parse_args()
-		with open("file.txt") as f:
-			if args["Char"] != -1:
-				code = f.read() + args["Char"]
-			else:
-				code = f.read()[:-1]
-			f.write(code)
-		return get_code_compl(code, args["Index"]), 200
+		return get_code_compl(args["Code"], args["Index"]), 200
 
 class CheckIfReady(Resource):
 	def get(self):
