@@ -32,12 +32,11 @@ class ui():
 		self.root.title("Python Assistant")
 		self.root.iconbitmap('icon.ico')
 		self.root.resizable(False, False)
-		self.l1 = Label(self.root, image = self.icn)
-		self.b1 = Button(self.root, image = self.icn, text = "Start Python Assistant Backend", command = self.show_info)
-		self.l1.place(x = 0, y = 0, relwidth = 1, relheight = 1)
+		self.b1 = Button(self.root, image = self.icn, command = self.show_info)
 		self.b1.grid(row = 0, column = 0)
 		self.root.configure(width = 340, height = 450, bg = "lightblue")
 		self.to_run = False
+		self.root.wm_withdraw()
 		self.show_ui()
 
 	def show_info(self):
@@ -51,6 +50,7 @@ class ui():
 		self.root.destroy()
 
 	def show_ui(self):
+		self.show_info()
 		self.root.mainloop()
 
 r = ui()
